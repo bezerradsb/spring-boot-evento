@@ -4,12 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Convidado {
 
 	@Id
-	@NotEmpty
+	@NotNull
 	private long rg;
 	
 	@NotEmpty
@@ -41,6 +42,4 @@ public class Convidado {
 	public void setEvento(Evento evento) {
 		this.evento = evento;
 	}
-	
-
 }
