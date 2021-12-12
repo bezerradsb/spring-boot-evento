@@ -29,7 +29,7 @@ public class EventoController {
 	public String form() {
 		return "evento/formEvento";
 	}
-	
+		
 	@RequestMapping(value="/cadastrarEvento", method=RequestMethod.POST)
 	public String form(@Valid Evento evento, BindingResult result, RedirectAttributes attributes){
 		if(result.hasErrors()) {
@@ -41,6 +41,7 @@ public class EventoController {
 		attributes.addFlashAttribute("mensagem", "Evento cadastrado com sucesso!");
 		return "redirect:/cadastrarEvento";
 		}
+	
 	
 	@RequestMapping ("/eventos")
 	public ModelAndView listaEventos() {
@@ -67,6 +68,26 @@ public class EventoController {
 		er.delete(evento);
 		return "redirect:/eventos";
 	}
+
+	@RequestMapping(value="/alterarEvento/{codigo}", method=RequestMethod.GET)
+	public ModelAndView alterarEvento(@PathVariable("codigo") long codigo) {
+		Evento evento = er.findByCodigo(codigo);
+		ModelAndView mv = new ModelAndView("evento/alterarEvento");
+		mv.addObject("evento", evento);
+		return mv;
+	}
+	
+	@RequestMapping(value="/alterarEvento/{codigo}", method=RequestMethod.POST)
+	public String form(@PathVariable("codigo") long codigo, @Valid Evento evento, BindingResult result, RedirectAttributes attributes){
+		if(result.hasErrors()) {
+			attributes.addFlashAttribute("mensagem", "Verifique os Campos!");
+			return "redirect:/alterarEvento/{codigo}";
+		}
+		
+		er.save(evento);
+		attributes.addFlashAttribute("mensagem", "Evento cadastrado com sucesso!");
+		return "redirect:/eventos";
+		}
 	
 	@RequestMapping(value="/{codigo}", method=RequestMethod.POST)
 	public String detalhesEventoPost(@PathVariable("codigo") long codigo, @Valid Convidado convidado,  BindingResult result, RedirectAttributes attributes){
